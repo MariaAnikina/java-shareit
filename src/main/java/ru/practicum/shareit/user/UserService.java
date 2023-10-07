@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class UserService {
     private final UserStorage userStorage;
+
     public Collection<User> getUsers() {
         return userStorage.getUsers();
     }
@@ -30,7 +31,7 @@ public class UserService {
     public User update(Long id, User user) {
         updateValidate(user);
         User user1 = userStorage.getUsersMap().get(id);
-        if (user.getName() != null){
+        if (user.getName() != null) {
             user1.setName(user.getName());
         }
         if (user.getEmail() != null) {
