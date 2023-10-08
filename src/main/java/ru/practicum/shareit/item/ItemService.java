@@ -16,8 +16,8 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class ItemService {
-    ItemStorage itemStorage;
-    UserStorage userStorage;
+    private ItemStorage itemStorage;
+    private UserStorage userStorage;
 
     public Item create(Long userId, ItemDto itemDto) {
         Item item = ItemMapper.toItem(itemDto);

@@ -4,9 +4,6 @@ import lombok.Data;
 
 import java.util.Objects;
 
-/**
- * TODO Sprint add-controllers.
- */
 @Data
 public class User {
     private Long id;

@@ -12,7 +12,7 @@ public class ItemMapper {
                 item.getName(),
                 item.getDescription(),
                 item.getBooking().isAvailable(),
-                item.getRequest() != null ? item.getRequest() : null
+                item.getRequest()
         );
     }
 
@@ -24,7 +24,7 @@ public class ItemMapper {
                 itemDto.getAvailable() != null ? itemDto.getAvailable() : null,
                 new User(),
                 new Booking(),
-                itemDto.getRequest() != null ? itemDto.getRequest() : null
+                itemDto.getRequest()
         );
     }
 }
