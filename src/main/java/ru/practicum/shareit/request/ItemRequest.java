@@ -11,8 +11,4 @@ public class ItemRequest {
     private String description;
     private User requestor;
     private LocalDateTime created;
-
-    public ItemRequest(Long id) {
-        this.id = id;
-    }
 }
