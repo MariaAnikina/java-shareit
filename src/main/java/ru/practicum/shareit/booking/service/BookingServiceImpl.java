@@ -51,7 +51,7 @@ public class BookingServiceImpl implements BookingService {
 		if (!bookingDto.getEnd().isAfter(bookingDto.getStart())) {
 			throw new BookingTimeException("Момент окончания бронирования должен быть позже начала");
 		}
-		if (!bookingDto.getStart().isAfter(LocalDateTime.now()) || !bookingDto.getEnd().isAfter(LocalDateTime.now()) ) {
+		if (!bookingDto.getStart().isAfter(LocalDateTime.now()) || !bookingDto.getEnd().isAfter(LocalDateTime.now())) {
 			throw new BookingTimeException("Момент окончания и начала бронирования должен быть в будущем");
 		}
 		Booking booking = BookingMapper.toBooking(bookingDto, user, item);
