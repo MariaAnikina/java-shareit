@@ -1,30 +1,62 @@
 package ru.practicum.shareit.item;
 
-import ru.practicum.shareit.booking.Booking;
+import ru.practicum.shareit.booking.dto.BookingDto;
+import ru.practicum.shareit.booking.model.Booking;
+import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.model.User;
 
-public class ItemMapper {
-    public static ItemDto toItemDto(Item item) {
-        return new ItemDto(
-                item.getId(),
-                item.getName(),
-                item.getDescription(),
-                item.getBooking().isAvailable(),
-                item.getRequest()
-        );
-    }
+import java.util.List;
 
-    public static Item toItem(ItemDto itemDto) {
-        return new Item(
-                null,
-                itemDto.getName(),
-                itemDto.getDescription(),
-                itemDto.getAvailable() != null ? itemDto.getAvailable() : null,
-                new User(),
-                new Booking(),
-                itemDto.getRequest()
-        );
-    }
+public class ItemMapper {
+	public static ItemDto toItemDto(Item item, BookingDto lastBooking, BookingDto nextBooking, List<CommentDto> comments) {
+		return new ItemDto(
+				item.getId(),
+				item.getName(),
+				item.getDescription(),
+				item.getAvailable(),
+				item.getRequestId(),
+				lastBooking,
+				nextBooking,
+				comments
+		);
+	}
+
+	public static ItemDto toItemDto(Item item, List<CommentDto> comments) {
+		return new ItemDto(
+				item.getId(),
+				item.getName(),
+				item.getDescription(),
+				item.getAvailable(),
+				item.getRequestId(),
+				null,
+				null,
+				comments
+		);
+	}
+
+	public static Item toItem(ItemDto itemDto) {
+		return new Item(
+				null,
+				itemDto.getName(),
+				itemDto.getDescription(),
+				itemDto.getAvailable(),
+				new User(),
+				new Booking(),
+				itemDto.getRequest()
+		);
+	}
+
+	public static Item toItem(ItemDto itemDto, User user) {
+		return new Item(
+				null,
+				itemDto.getName(),
+				itemDto.getDescription(),
+				itemDto.getAvailable() != null ? itemDto.getAvailable() : null,
+				user,
+				new Booking(),
+				itemDto.getRequest()
+		);
+	}
 }

@@ -11,4 +11,12 @@ public class UserMapper {
                 user.getEmail()
         );
     }
+
+    public static User toItem(UserDto userDto) {
+        return new User(
+                userDto.getId(),
+                userDto.getName(),
+                userDto.getEmail()
+        );
+    }
 }
