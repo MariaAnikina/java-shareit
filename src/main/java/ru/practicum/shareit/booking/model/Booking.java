@@ -26,7 +26,7 @@ public class Booking {
 	@JoinColumn(name = "item_id")
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Item item;
-	@JoinColumn(name = "user_id")
+	@JoinColumn(name = "booker_id")
 	@ManyToOne(fetch = FetchType.LAZY)
 	private User booker;
 	@Column(name = "status")

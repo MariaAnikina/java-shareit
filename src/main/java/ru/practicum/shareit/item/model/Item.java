@@ -25,10 +25,8 @@ public class Item {
 	@Column(name = "is_available")
 	private Boolean available;
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
+	@JoinColumn(name = "owner_id")
 	private User owner;
-	@Transient
-	private Booking booking;
 	@Column(name = "request_id")
 	private Long requestId;
 }
