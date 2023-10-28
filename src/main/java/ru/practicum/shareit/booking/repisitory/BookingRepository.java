@@ -1,7 +1,6 @@
 package ru.practicum.shareit.booking.repisitory;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.model.Status;
 
@@ -32,7 +31,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 
 	List<Booking> findByItemOwnerIdAndStatusOrderByStartDesc(Long userId, Status waiting);
 
-	Booking  findFirstByItemIdAndStatusNotAndStartAfterOrderByStartAsc(Long id, Status rejected, LocalDateTime now);
+	Booking findFirstByItemIdAndStatusNotAndStartAfterOrderByStartAsc(Long id, Status rejected, LocalDateTime now);
 
 	Booking findFirstByItemIdAndStatusNotAndStartBeforeOrderByStartDesc(Long id, Status rejected, LocalDateTime now);
 
