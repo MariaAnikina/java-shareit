@@ -51,55 +51,15 @@ public class ErrorHandler {
         return new ErrorResponse(e.getMessage());
     }
 
-//    @ExceptionHandler
-//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-//    public ErrorResponse handleInternalError(Throwable e) {
-//        log.error(e.getMessage());
-//        return new ErrorResponse("Произошла непредвиденная ошибка.");
-//    }
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse handleInternalError(Throwable e) {
+        log.error(e.getMessage());
+        return new ErrorResponse("Произошла непредвиденная ошибка.");
+    }
 
     @Data
     public static class ErrorResponse {
         private final String error;
     }
-
-//    @ExceptionHandler ({ValidationException.class})
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    public ErrorResponse handleValidationError(final ValidationException e) {
-//        return new ErrorResponse("Ошибка валидации.");
-//    }
-//
-//    @ExceptionHandler({UserAlreadyExistsException.class})
-//    @ResponseStatus(HttpStatus.CONFLICT)
-//    public ErrorResponse handleValidationError(final RuntimeException e) {
-//        return new ErrorResponse("Объект уже существует.");
-//    }
-//
-//    @ExceptionHandler({NullPointerException.class, UpdateNotYoursItemException.class, UserNotFoundException.class})
-//    @ResponseStatus(HttpStatus.NOT_FOUND)
-//    public ErrorResponse handleEmptyObjectPassingError(final RuntimeException e) {
-//        return new ErrorResponse("Передан пустой объект.");
-//    }
-//
-////    @ExceptionHandler
-////    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-////    public ErrorResponse handleThrowable(final Throwable e) {
-////        return new ErrorResponse("Произошла непредвиденная ошибка.");
-////    }
-//
-//
-//
-//    @ExceptionHandler
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    public ErrorResponse handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-//        String error = Objects.requireNonNull(e.getFieldError()).getDefaultMessage();
-//        log.error(error);
-//        return new ErrorResponse(error);
-//    }
-//
-//
-//    @Data
-//    public static class ErrorResponse {
-//        private final String error;
-//    }
 }

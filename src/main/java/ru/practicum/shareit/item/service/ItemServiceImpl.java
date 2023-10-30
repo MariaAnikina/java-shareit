@@ -3,6 +3,7 @@ package ru.practicum.shareit.item.service;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.booking.BookingMapper;
+import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.model.Status;
 import ru.practicum.shareit.booking.repisitory.BookingRepository;
@@ -89,16 +90,9 @@ public class ItemServiceImpl implements ItemService {
 		List<CommentDto> comments = commentRepository.findByItemIdOrderByCreatedDesc(itemId).stream()
 				.map(comment -> CommentMapper.commentToDto(comment, comment.getAuthor().getName()))
 				.collect(Collectors.toList());
-		if (last != null && next != null) {
-			return ItemMapper.toItemDto(item, BookingMapper.toBookingDto(last), BookingMapper.toBookingDto(next), comments);
-		}
-		if (last != null) {
-			return ItemMapper.toItemDto(item, BookingMapper.toBookingDto(last), null, comments);
-		}
-		if (next != null) {
-			return ItemMapper.toItemDto(item, null, BookingMapper.toBookingDto(next), comments);
-		}
-		return ItemMapper.toItemDto(item, null, null, comments);
+		BookingDto lastBookingDto = last !=null ? BookingMapper.toBookingDto(last) : null;
+		BookingDto nextBookingDto = next !=null ? BookingMapper.toBookingDto(next) : null;
+		return ItemMapper.toItemDto(item, lastBookingDto, nextBookingDto, comments);
 	}
 
 	public Collection<ItemDto> getItemsUser(Long userId) {
@@ -125,16 +119,9 @@ public class ItemServiceImpl implements ItemService {
 							.stream()
 							.map(comment -> CommentMapper.commentToDto(comment, comment.getAuthor().getName()))
 							.collect(Collectors.toList());
-					if (last != null && next != null) {
-						return ItemMapper.toItemDto(item, BookingMapper.toBookingDto(last), BookingMapper.toBookingDto(next), comments);
-					}
-					if (last != null) {
-						return ItemMapper.toItemDto(item, BookingMapper.toBookingDto(last), null, comments);
-					}
-					if (next != null) {
-						return ItemMapper.toItemDto(item, null, BookingMapper.toBookingDto(next), comments);
-					}
-					return ItemMapper.toItemDto(item, null, null, comments);
+					BookingDto lastBookingDto = last !=null ? BookingMapper.toBookingDto(last) : null;
+					BookingDto nextBookingDto = next !=null ? BookingMapper.toBookingDto(next) : null;
+					return ItemMapper.toItemDto(item, lastBookingDto, nextBookingDto, comments);
 				})
 				.collect(Collectors.toList()
 				);
