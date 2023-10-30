@@ -90,8 +90,8 @@ public class ItemServiceImpl implements ItemService {
 		List<CommentDto> comments = commentRepository.findByItemIdOrderByCreatedDesc(itemId).stream()
 				.map(comment -> CommentMapper.commentToDto(comment, comment.getAuthor().getName()))
 				.collect(Collectors.toList());
-		BookingDto lastBookingDto = last !=null ? BookingMapper.toBookingDto(last) : null;
-		BookingDto nextBookingDto = next !=null ? BookingMapper.toBookingDto(next) : null;
+		BookingDto lastBookingDto = last != null ? BookingMapper.toBookingDto(last) : null;
+		BookingDto nextBookingDto = next != null ? BookingMapper.toBookingDto(next) : null;
 		return ItemMapper.toItemDto(item, lastBookingDto, nextBookingDto, comments);
 	}
 
@@ -119,8 +119,8 @@ public class ItemServiceImpl implements ItemService {
 							.stream()
 							.map(comment -> CommentMapper.commentToDto(comment, comment.getAuthor().getName()))
 							.collect(Collectors.toList());
-					BookingDto lastBookingDto = last !=null ? BookingMapper.toBookingDto(last) : null;
-					BookingDto nextBookingDto = next !=null ? BookingMapper.toBookingDto(next) : null;
+					BookingDto lastBookingDto = last != null ? BookingMapper.toBookingDto(last) : null;
+					BookingDto nextBookingDto = next != null ? BookingMapper.toBookingDto(next) : null;
 					return ItemMapper.toItemDto(item, lastBookingDto, nextBookingDto, comments);
 				})
 				.collect(Collectors.toList()
