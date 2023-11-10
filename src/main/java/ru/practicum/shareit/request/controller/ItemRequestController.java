@@ -1,7 +1,6 @@
 package ru.practicum.shareit.request.controller;
 
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
 import ru.practicum.shareit.request.dto.ItemRequestOutDto;
@@ -30,7 +29,7 @@ public class ItemRequestController {
 	@GetMapping("/all")
 	public List<ItemRequestOutDto> getAllRequests(@RequestHeader("X-Sharer-User-Id") Long userId,
 	                                              @RequestParam(defaultValue = "0") Integer from,
-	                                              @RequestParam(defaultValue = "10")  Integer size) {
+	                                              @RequestParam(defaultValue = "10") Integer size) {
 		return itemRequestService.getAllRequests(userId, from, size);
 	}
 

@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.BookingDtoFull;
 import ru.practicum.shareit.booking.service.BookingService;
-import ru.practicum.shareit.booking.service.BookingServiceImpl;
 
 import javax.validation.Valid;
 import java.util.Collection;
@@ -38,7 +37,7 @@ public class BookingController {
 	public Collection<BookingDtoFull> getBooking(@RequestHeader("X-Sharer-User-Id") Long userId,
 	                                             @RequestParam(defaultValue = "ALL") String state,
 	                                             @RequestParam(defaultValue = "0") Integer from,
-	                                             @RequestParam(defaultValue = "10")  Integer size) {
+	                                             @RequestParam(defaultValue = "10") Integer size) {
 		return bookingService.getBooking(userId, state, from, size);
 	}
 
@@ -46,7 +45,7 @@ public class BookingController {
 	public Collection<BookingDtoFull> getYourBooking(@RequestHeader("X-Sharer-User-Id") Long userId,
 	                                                 @RequestParam(defaultValue = "ALL") String state,
 	                                                 @RequestParam(defaultValue = "0") Integer from,
-	                                                 @RequestParam(defaultValue = "10")  Integer size) {
+	                                                 @RequestParam(defaultValue = "10") Integer size) {
 		return bookingService.getYourBooking(userId, state, from, size);
 	}
 }

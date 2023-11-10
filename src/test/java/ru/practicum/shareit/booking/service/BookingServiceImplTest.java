@@ -5,7 +5,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import ru.practicum.shareit.booking.BookingMapper;
 import ru.practicum.shareit.booking.dto.BookingDto;
@@ -15,7 +14,6 @@ import ru.practicum.shareit.booking.model.Status;
 import ru.practicum.shareit.booking.repisitory.BookingRepository;
 import ru.practicum.shareit.exception.*;
 import ru.practicum.shareit.item.ItemMapper;
-import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.ItemRepository;
 import ru.practicum.shareit.user.UserMapper;
@@ -51,8 +49,8 @@ class BookingServiceImplTest {
 		User owner = new User(2L, "Ваня2", "Van2@mail.ru");
 		Item item = new Item(1L, "Платье", "Платье для фотоссесии",
 				true, owner, null);
-		BookingDto bookingDto = new BookingDto(1L, LocalDateTime.of(2023, 12,1,12,12),
-				LocalDateTime.of(2023, 12,6,12,12), item.getId(), null, null);
+		BookingDto bookingDto = new BookingDto(1L, LocalDateTime.of(2023, 12, 1, 12, 12),
+				LocalDateTime.of(2023, 12, 6, 12, 12), item.getId(), null, null);
 		Booking booking = BookingMapper.toBooking(bookingDto, user, item);
 		when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
 		when(itemRepository.findById(bookingDto.getItemId())).thenReturn(Optional.of(item));
@@ -78,7 +76,7 @@ class BookingServiceImplTest {
 		User owner = new User(2L, "Ваня2", "Van2@mail.ru");
 		Item item = new Item(1L, "Платье", "Платье для фотоссесии", true, owner, null);
 		BookingDto bookingDto = new BookingDto(1L, null,
-				LocalDateTime.of(2023, 12,6,12,12), item.getId(), null, null);
+				LocalDateTime.of(2023, 12, 6, 12, 12), item.getId(), null, null);
 
 		verify(bookingRepository, never()).save(any(Booking.class));
 		assertThrows(BookingTimeException.class, () -> bookingService.create(user.getId(), bookingDto));
@@ -89,7 +87,7 @@ class BookingServiceImplTest {
 		User user = new User(1L, "Ваня", "Van@mail.ru");
 		User owner = new User(2L, "Ваня2", "Van2@mail.ru");
 		Item item = new Item(1L, "Платье", "Платье для фотоссесии", true, owner, null);
-		BookingDto bookingDto = new BookingDto(1L, LocalDateTime.of(2023, 12,6,12,12),
+		BookingDto bookingDto = new BookingDto(1L, LocalDateTime.of(2023, 12, 6, 12, 12),
 				null, item.getId(), null, null);
 
 		verify(bookingRepository, never()).save(any(Booking.class));
@@ -101,8 +99,8 @@ class BookingServiceImplTest {
 		User user = new User(1L, "Ваня", "Van@mail.ru");
 		User owner = new User(2L, "Ваня2", "Van2@mail.ru");
 		Item item = new Item(1L, "Платье", "Платье для фотоссесии", true, owner, null);
-		BookingDto bookingDto = new BookingDto(1L, LocalDateTime.of(2023, 12,1,12,12),
-				LocalDateTime.of(2023, 12,6,12,12), item.getId(), null, null);
+		BookingDto bookingDto = new BookingDto(1L, LocalDateTime.of(2023, 12, 1, 12, 12),
+				LocalDateTime.of(2023, 12, 6, 12, 12), item.getId(), null, null);
 		when(userRepository.findById(user.getId())).thenReturn(Optional.empty());
 
 		verify(bookingRepository, never()).save(any(Booking.class));
@@ -114,8 +112,8 @@ class BookingServiceImplTest {
 		User user = new User(1L, "Ваня", "Van@mail.ru");
 		User owner = new User(2L, "Ваня2", "Van2@mail.ru");
 		Item item = new Item(1L, "Платье", "Платье для фотоссесии", true, owner, null);
-		BookingDto bookingDto = new BookingDto(1L, LocalDateTime.of(2023, 12,1,12,12),
-				LocalDateTime.of(2023, 12,6,12,12), item.getId(), null, null);
+		BookingDto bookingDto = new BookingDto(1L, LocalDateTime.of(2023, 12, 1, 12, 12),
+				LocalDateTime.of(2023, 12, 6, 12, 12), item.getId(), null, null);
 		when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
 		when(itemRepository.findById(bookingDto.getItemId())).thenReturn(Optional.empty());
 
@@ -127,8 +125,8 @@ class BookingServiceImplTest {
 	void create_thenOwnerItemReservation_thenReturnBookingNotFoundException() {
 		User user = new User(1L, "Ваня", "Van@mail.ru");
 		Item item = new Item(1L, "Платье", "Платье для фотоссесии", true, user, null);
-		BookingDto bookingDto = new BookingDto(1L, LocalDateTime.of(2023, 12,1,12,12),
-				LocalDateTime.of(2023, 12,6,12,12), item.getId(), null, null);
+		BookingDto bookingDto = new BookingDto(1L, LocalDateTime.of(2023, 12, 1, 12, 12),
+				LocalDateTime.of(2023, 12, 6, 12, 12), item.getId(), null, null);
 		when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
 		when(itemRepository.findById(bookingDto.getItemId())).thenReturn(Optional.of(item));
 
@@ -141,8 +139,8 @@ class BookingServiceImplTest {
 		User user = new User(1L, "Ваня", "Van@mail.ru");
 		User owner = new User(2L, "Ваня2", "Van2@mail.ru");
 		Item item = new Item(1L, "Платье", "Платье для фотоссесии", true, owner, null);
-		BookingDto bookingDto = new BookingDto(1L, LocalDateTime.of(2023, 12,6,12,12),
-				LocalDateTime.of(2023, 12,1,12,12),item.getId(), null, null);
+		BookingDto bookingDto = new BookingDto(1L, LocalDateTime.of(2023, 12, 6, 12, 12),
+				LocalDateTime.of(2023, 12, 1, 12, 12), item.getId(), null, null);
 		when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
 		when(itemRepository.findById(bookingDto.getItemId())).thenReturn(Optional.of(item));
 
@@ -155,8 +153,8 @@ class BookingServiceImplTest {
 		User user = new User(1L, "Ваня", "Van@mail.ru");
 		User owner = new User(2L, "Ваня2", "Van2@mail.ru");
 		Item item = new Item(1L, "Платье", "Платье для фотоссесии", true, owner, null);
-		BookingDto bookingDto = new BookingDto(1L, LocalDateTime.of(2022, 12,1,12,12),
-				LocalDateTime.of(2023, 12,6,12,12), item.getId(), null, null);
+		BookingDto bookingDto = new BookingDto(1L, LocalDateTime.of(2022, 12, 1, 12, 12),
+				LocalDateTime.of(2023, 12, 6, 12, 12), item.getId(), null, null);
 		when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
 		when(itemRepository.findById(bookingDto.getItemId())).thenReturn(Optional.of(item));
 
@@ -169,8 +167,8 @@ class BookingServiceImplTest {
 		User user = new User(1L, "Ваня", "Van@mail.ru");
 		User owner = new User(2L, "Ваня2", "Van2@mail.ru");
 		Item item = new Item(1L, "Платье", "Платье для фотоссесии", true, owner, null);
-		BookingDto bookingDto = new BookingDto(1L, LocalDateTime.of(2023, 12,1,12,12),
-				LocalDateTime.of(2022, 12,6,12,12), item.getId(), null, null);
+		BookingDto bookingDto = new BookingDto(1L, LocalDateTime.of(2023, 12, 1, 12, 12),
+				LocalDateTime.of(2022, 12, 6, 12, 12), item.getId(), null, null);
 		when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
 		when(itemRepository.findById(bookingDto.getItemId())).thenReturn(Optional.of(item));
 
@@ -183,8 +181,8 @@ class BookingServiceImplTest {
 		User user = new User(1L, "Ваня", "Van@mail.ru");
 		User owner = new User(2L, "Ваня2", "Van2@mail.ru");
 		Item item = new Item(1L, "Платье", "Платье для фотоссесии", null, owner, null);
-		BookingDto bookingDto = new BookingDto(1L, LocalDateTime.of(2023, 12,1,12,12),
-				LocalDateTime.of(2022, 12,6,12,12), item.getId(), user.getId(), Status.WAITING);
+		BookingDto bookingDto = new BookingDto(1L, LocalDateTime.of(2023, 12, 1, 12, 12),
+				LocalDateTime.of(2022, 12, 6, 12, 12), item.getId(), user.getId(), Status.WAITING);
 		Booking booking = BookingMapper.toBooking(bookingDto, user, item);
 		when(bookingRepository.findByIdAndItemOwnerId(bookingDto.getId(), user.getId()))
 				.thenReturn(Optional.of(booking));
@@ -208,8 +206,8 @@ class BookingServiceImplTest {
 		User user = new User(1L, "Ваня", "Van@mail.ru");
 		User owner = new User(2L, "Ваня2", "Van2@mail.ru");
 		Item item = new Item(1L, "Платье", "Платье для фотоссесии", null, owner, null);
-		BookingDto bookingDto = new BookingDto(1L, LocalDateTime.of(2023, 12,1,12,12),
-				LocalDateTime.of(2022, 12,6,12,12), item.getId(), user.getId(), Status.WAITING);
+		BookingDto bookingDto = new BookingDto(1L, LocalDateTime.of(2023, 12, 1, 12, 12),
+				LocalDateTime.of(2022, 12, 6, 12, 12), item.getId(), user.getId(), Status.WAITING);
 		when(bookingRepository.findByIdAndItemOwnerId(bookingDto.getId(), user.getId()))
 				.thenReturn(Optional.empty());
 
@@ -222,8 +220,8 @@ class BookingServiceImplTest {
 		User user = new User(1L, "Ваня", "Van@mail.ru");
 		User owner = new User(2L, "Ваня2", "Van2@mail.ru");
 		Item item = new Item(1L, "Платье", "Платье для фотоссесии", true, owner, null);
-		BookingDto bookingDto = new BookingDto(1L, LocalDateTime.of(2023, 12,1,12,12),
-				LocalDateTime.of(2022, 12,6,12,12), item.getId(), user.getId(), Status.APPROVED);
+		BookingDto bookingDto = new BookingDto(1L, LocalDateTime.of(2023, 12, 1, 12, 12),
+				LocalDateTime.of(2022, 12, 6, 12, 12), item.getId(), user.getId(), Status.APPROVED);
 		Booking booking = BookingMapper.toBooking(bookingDto, user, item);
 		when(bookingRepository.findByIdAndItemOwnerId(bookingDto.getId(), user.getId()))
 				.thenReturn(Optional.of(booking));
@@ -237,8 +235,8 @@ class BookingServiceImplTest {
 		User user = new User(1L, "Ваня", "Van@mail.ru");
 		User owner = new User(2L, "Ваня2", "Van2@mail.ru");
 		Item item = new Item(1L, "Платье", "Платье для фотоссесии", true, owner, null);
-		BookingDto bookingDto = new BookingDto(1L, LocalDateTime.of(2023, 12,1,12,12),
-				LocalDateTime.of(2022, 12,6,12,12), item.getId(), user.getId(), Status.APPROVED);
+		BookingDto bookingDto = new BookingDto(1L, LocalDateTime.of(2023, 12, 1, 12, 12),
+				LocalDateTime.of(2022, 12, 6, 12, 12), item.getId(), user.getId(), Status.APPROVED);
 		Booking booking = BookingMapper.toBooking(bookingDto, user, item);
 		when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
 		when(bookingRepository.findById(bookingDto.getId())).thenReturn(Optional.of(booking));
@@ -246,7 +244,7 @@ class BookingServiceImplTest {
 		BookingDtoFull result = bookingService.getBookingInformation(user.getId(), bookingDto.getId());
 
 		verify(bookingRepository, times(1)).findById(anyLong());
-		verify(userRepository,times(1)).findById(anyLong());
+		verify(userRepository, times(1)).findById(anyLong());
 		assertThat(result)
 				.hasFieldOrPropertyWithValue("id", 1L)
 				.hasFieldOrPropertyWithValue("start", bookingDto.getStart())
@@ -261,8 +259,8 @@ class BookingServiceImplTest {
 		User user = new User(1L, "Ваня", "Van@mail.ru");
 		User owner = new User(2L, "Ваня2", "Van2@mail.ru");
 		Item item = new Item(1L, "Платье", "Платье для фотоссесии", true, owner, null);
-		BookingDto bookingDto = new BookingDto(1L, LocalDateTime.of(2023, 12,1,12,12),
-				LocalDateTime.of(2022, 12,6,12,12), item.getId(), user.getId(), Status.APPROVED);
+		BookingDto bookingDto = new BookingDto(1L, LocalDateTime.of(2023, 12, 1, 12, 12),
+				LocalDateTime.of(2022, 12, 6, 12, 12), item.getId(), user.getId(), Status.APPROVED);
 		Booking booking = BookingMapper.toBooking(bookingDto, user, item);
 		when(userRepository.findById(owner.getId())).thenReturn(Optional.of(owner));
 		when(bookingRepository.findById(bookingDto.getId())).thenReturn(Optional.of(booking));
@@ -270,7 +268,7 @@ class BookingServiceImplTest {
 		BookingDtoFull result = bookingService.getBookingInformation(owner.getId(), bookingDto.getId());
 
 		verify(bookingRepository, times(1)).findById(anyLong());
-		verify(userRepository,times(1)).findById(anyLong());
+		verify(userRepository, times(1)).findById(anyLong());
 		assertThat(result)
 				.hasFieldOrPropertyWithValue("id", 1L)
 				.hasFieldOrPropertyWithValue("start", bookingDto.getStart())
@@ -286,8 +284,8 @@ class BookingServiceImplTest {
 		User user = new User(1L, "Ваня", "Van@mail.ru");
 		User owner = new User(2L, "Ваня2", "Van2@mail.ru");
 		Item item = new Item(1L, "Платье", "Платье для фотоссесии", true, owner, null);
-		BookingDto bookingDto = new BookingDto(1L, LocalDateTime.of(2023, 12,1,12,12),
-				LocalDateTime.of(2022, 12,6,12,12), item.getId(), user.getId(), Status.APPROVED);
+		BookingDto bookingDto = new BookingDto(1L, LocalDateTime.of(2023, 12, 1, 12, 12),
+				LocalDateTime.of(2022, 12, 6, 12, 12), item.getId(), user.getId(), Status.APPROVED);
 		Booking booking = BookingMapper.toBooking(bookingDto, user, item);
 		when(userRepository.findById(anotherUser.getId())).thenReturn(Optional.of(anotherUser));
 		when(bookingRepository.findById(bookingDto.getId())).thenReturn(Optional.of(booking));
@@ -300,14 +298,14 @@ class BookingServiceImplTest {
 		User user = new User(1L, "Ваня", "Van@mail.ru");
 		User owner = new User(2L, "Ваня2", "Van2@mail.ru");
 		Item item = new Item(1L, "Платье", "Платье для фотоссесии", true, owner, null);
-		BookingDto bookingDto = new BookingDto(1L, LocalDateTime.of(2023, 12,1,12,12),
-				LocalDateTime.of(2022, 12,6,12,12), item.getId(), user.getId(), Status.APPROVED);
+		BookingDto bookingDto = new BookingDto(1L, LocalDateTime.of(2023, 12, 1, 12, 12),
+				LocalDateTime.of(2022, 12, 6, 12, 12), item.getId(), user.getId(), Status.APPROVED);
 		Booking booking = BookingMapper.toBooking(bookingDto, user, item);
 		when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
 		when(bookingRepository.findByBookerIdAndStartAfterOrderByStartDesc(anyLong(), any(LocalDateTime.class),
 				any(Pageable.class))).thenReturn(List.of(booking));
 
-		Collection<BookingDtoFull> result = bookingService.getBooking(user.getId(), "FUTURE", 0,2);
+		Collection<BookingDtoFull> result = bookingService.getBooking(user.getId(), "FUTURE", 0, 2);
 
 		assertEquals(result.size(), 1);
 		assertTrue(result.contains(BookingMapper.toBookingDtoFull(booking)));
@@ -318,11 +316,11 @@ class BookingServiceImplTest {
 		User user = new User(1L, "Ваня", "Van@mail.ru");
 		User owner = new User(2L, "Ваня2", "Van2@mail.ru");
 		Item item = new Item(1L, "Платье", "Платье для фотоссесии", true, owner, null);
-		BookingDto bookingDto = new BookingDto(1L, LocalDateTime.of(2023, 12,1,12,12),
-				LocalDateTime.of(2022, 12,6,12,12), item.getId(), user.getId(), Status.APPROVED);
+		BookingDto bookingDto = new BookingDto(1L, LocalDateTime.of(2023, 12, 1, 12, 12),
+				LocalDateTime.of(2022, 12, 6, 12, 12), item.getId(), user.getId(), Status.APPROVED);
 		when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
 
-		assertThrows(BookingStateException.class, () -> bookingService.getBooking(user.getId(), "bad", 0,2));
+		assertThrows(BookingStateException.class, () -> bookingService.getBooking(user.getId(), "bad", 0, 2));
 	}
 
 	@Test
@@ -330,13 +328,13 @@ class BookingServiceImplTest {
 		User user = new User(1L, "Ваня", "Van@mail.ru");
 		User owner = new User(2L, "Ваня2", "Van2@mail.ru");
 		Item item = new Item(1L, "Платье", "Платье для фотоссесии", true, owner, null);
-		BookingDto bookingDto = new BookingDto(1L, LocalDateTime.of(2023, 12,1,12,12),
-				LocalDateTime.of(2022, 12,6,12,12), item.getId(), user.getId(), Status.APPROVED);
+		BookingDto bookingDto = new BookingDto(1L, LocalDateTime.of(2023, 12, 1, 12, 12),
+				LocalDateTime.of(2022, 12, 6, 12, 12), item.getId(), user.getId(), Status.APPROVED);
 		Booking booking = BookingMapper.toBooking(bookingDto, user, item);
 		when(bookingRepository.findByItemOwnerIdAndStartAfterOrderByStartDesc(anyLong(), any(LocalDateTime.class),
 				any(Pageable.class))).thenReturn(List.of(booking));
 
-		Collection<BookingDtoFull> result = bookingService.getYourBooking(user.getId(), "FUTURE", 0,2);
+		Collection<BookingDtoFull> result = bookingService.getYourBooking(user.getId(), "FUTURE", 0, 2);
 
 		assertEquals(result.size(), 1);
 		assertTrue(result.contains(BookingMapper.toBookingDtoFull(booking)));
@@ -347,12 +345,12 @@ class BookingServiceImplTest {
 		User user = new User(1L, "Ваня", "Van@mail.ru");
 		User owner = new User(2L, "Ваня2", "Van2@mail.ru");
 		Item item = new Item(1L, "Платье", "Платье для фотоссесии", true, owner, null);
-		BookingDto bookingDto = new BookingDto(1L, LocalDateTime.of(2023, 12,1,12,12),
-				LocalDateTime.of(2022, 12,6,12,12), item.getId(), user.getId(), Status.APPROVED);
+		BookingDto bookingDto = new BookingDto(1L, LocalDateTime.of(2023, 12, 1, 12, 12),
+				LocalDateTime.of(2022, 12, 6, 12, 12), item.getId(), user.getId(), Status.APPROVED);
 		Booking booking = BookingMapper.toBooking(bookingDto, user, item);
 		when(bookingRepository.findByItemOwnerIdAndStartAfterOrderByStartDesc(anyLong(), any(LocalDateTime.class),
 				any(Pageable.class))).thenReturn(new ArrayList<>());
 
-		assertThrows(RuntimeException.class, () -> bookingService.getYourBooking(user.getId(), "FUTURE", 0,2));
+		assertThrows(RuntimeException.class, () -> bookingService.getYourBooking(user.getId(), "FUTURE", 0, 2));
 	}
 }

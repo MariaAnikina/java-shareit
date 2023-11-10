@@ -73,7 +73,8 @@ class ItemServiceImplTest {
 	@Test
 	void create_whenItemNotValidName_thenReturnUserDoesNotExistException() {
 		User user1 = new User(1L, "Ваня", "Van@mail.ru");
-		when(userRepository.findById(1L)).thenReturn(Optional.of(user1));
+		when(userRepository.findById(1L))
+				.thenReturn(Optional.of(user1));
 		Item item = new Item(1L, null, "Платье для фотоссесии",
 				false, new User(1L, "Ваня", "Van@mail.ru"), null);
 		Item item2 = new Item(1L, " ", "Платье для фотоссесии",

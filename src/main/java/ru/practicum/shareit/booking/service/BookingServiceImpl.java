@@ -1,7 +1,5 @@
 package ru.practicum.shareit.booking.service;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -80,7 +78,7 @@ public class BookingServiceImpl implements BookingService {
 			booking.setStatus(Status.REJECTED);
 		}
 		bookingRepository.save(booking);
- 		return BookingMapper.toBookingDtoFull(booking);
+		return BookingMapper.toBookingDtoFull(booking);
 	}
 
 	@Override
@@ -157,7 +155,7 @@ public class BookingServiceImpl implements BookingService {
 		try {
 			bookingState = valueOf(state);
 		} catch (IllegalArgumentException e) {
-			throw new BookingStateException("Unknown state: "  + state);
+			throw new BookingStateException("Unknown state: " + state);
 		}
 		List<Booking> bookings;
 		switch (bookingState) {
