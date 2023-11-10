@@ -8,8 +8,6 @@ import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.UserMapper;
 import ru.practicum.shareit.user.model.User;
 
-import java.util.ArrayList;
-
 public class BookingMapper {
 	public static Booking toBooking(BookingDto bookingDto, User booker, Item item) {
 		return new Booking(

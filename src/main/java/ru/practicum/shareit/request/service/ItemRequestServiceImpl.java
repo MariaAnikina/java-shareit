@@ -81,11 +81,11 @@ public class ItemRequestServiceImpl implements ItemRequestService {
 		return itemRequests.stream()
 				.map(itemRequest -> ItemRequestMapper.toItemRequestOutDto(itemRequest, new ArrayList<>()))
 				.peek(itemRequestOutDto -> {
-						List<ItemDto> items = itemRepository.findByRequestId(itemRequestOutDto.getId()).stream()
-								.map(item -> ItemMapper.toItemDto(item, null))
-								.collect(Collectors.toList());
-						itemRequestOutDto.setItems(items);
-					})
+					List<ItemDto> items = itemRepository.findByRequestId(itemRequestOutDto.getId()).stream()
+							.map(item -> ItemMapper.toItemDto(item, null))
+							.collect(Collectors.toList());
+					itemRequestOutDto.setItems(items);
+				})
 				.collect(Collectors.toList());
 	}
 
