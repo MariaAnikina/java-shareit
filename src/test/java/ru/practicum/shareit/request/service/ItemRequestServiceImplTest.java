@@ -80,8 +80,8 @@ class ItemRequestServiceImplTest {
 		Item item = new Item();
 		User user = new User(1L, "Тарас", "tar@mail.ru");
 		when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
-		when(itemRequestRepository.findByRequestorId(user.getId())).
-				thenReturn(List.of(
+		when(itemRequestRepository.findByRequestorId(user.getId()))
+				.thenReturn(List.of(
 						ItemRequestMapper.toItemRequest(itemRequestDto2, user),
 						ItemRequestMapper.toItemRequest(itemRequestDto, user))
 				);
