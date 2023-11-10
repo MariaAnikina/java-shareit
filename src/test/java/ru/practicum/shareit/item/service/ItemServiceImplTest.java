@@ -153,6 +153,7 @@ class ItemServiceImplTest {
 				true, user, null);
 		Item item3 = new Item(3L, "Стол", "Стол на большую компанию",
 				false, new User(2L, "Саша", "Sanya@mail.ru"), null);
+		when(userRepository.existsById(1L)).thenReturn(true);
 		when(itemRepository.findByOwnerId(anyLong(), any(Pageable.class))).thenReturn(List.of(item, item2));
 		when(bookingRepository.findFirstByItemIdAndStatusNotAndStartBeforeOrderByStartDesc(
 				anyLong(),
