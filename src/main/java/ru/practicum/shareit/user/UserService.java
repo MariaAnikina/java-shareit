@@ -1,6 +1,7 @@
 package ru.practicum.shareit.user;
 
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.exception.UserAlreadyExistsException;
@@ -14,8 +15,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor
 @Slf4j
+@RequiredArgsConstructor
 public class UserService {
 	private final UserRepository userRepository;
 
@@ -27,7 +28,7 @@ public class UserService {
 		Optional<User> userOptional = userRepository.findById(id);
 		if (userOptional.isEmpty()) throw new UserNotFoundException("Пользователь с id=" + id + " не найден");
 		User user = userOptional.get();
-		return UserMapper.toItemDto(userRepository.getReferenceById(id));
+		return UserMapper.toItemDto(user);
 	}
 
 	public UserDto create(UserDto userDto) {
@@ -45,18 +46,26 @@ public class UserService {
 	}
 
 	public UserDto update(Long id, UserDto userDto) {
-		User user = userRepository.getReferenceById(id);
+		Optional<User> userOptional = userRepository.findById(id);
+		if (userOptional.isEmpty()) {
+			throw new UserNotFoundException("Пользователь с id=" + id + " не найден");
+		}
+		User user = userOptional.get();
+		updateValidate(userDto, user);
+		return UserMapper.toItemDto(userRepository.save(user));
+	}
+
+	public void delete(long id) {
+		userRepository.deleteById(id);
+	}
+
+	private void updateValidate(UserDto userDto, User user) {
 		if (userDto.getName() != null) {
 			user.setName(userDto.getName());
 		}
 		if (userDto.getEmail() != null) {
 			user.setEmail(userDto.getEmail());
 		}
-		return UserMapper.toItemDto(userRepository.save(user));
-	}
-
-	public void delete(long id) {
-		userRepository.deleteById(id);
 	}
 
 	private void createValidate(User user) {

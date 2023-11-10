@@ -13,14 +13,14 @@ import java.util.List;
 @AllArgsConstructor
 public class ItemDto {
 	private Long id;
-	@NotBlank
+	@NotBlank(message = "Имя вещи не может быть пустым")
 	private String name;
-	@NotBlank
+	@NotBlank(message = "Описание вещи не может быть пустым")
 	private String description;
 	@JsonProperty("available")
 	@NotNull(message = "Должна быть указана доступность вещи")
 	private final Boolean available;
-	private Long request;
+	private Long requestId;
 	private final BookingDto lastBooking;
 	private final BookingDto nextBooking;
 	private final List<CommentDto> comments;

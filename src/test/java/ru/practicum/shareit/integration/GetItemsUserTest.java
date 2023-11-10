@@ -13,22 +13,18 @@ import ru.practicum.shareit.user.UserService;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.model.User;
 
-
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.*;
 
 @Transactional
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
-public class GetItemsByUserIdTest {
+public class GetItemsUserTest {
 	private final EntityManager em;
 	private final ItemService itemService;
 	private final UserService userService;
