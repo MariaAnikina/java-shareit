@@ -85,6 +85,7 @@ class BookingServiceImplTest {
 
 		verify(bookingRepository, never()).save(any(Booking.class));
 	}
+
 	@Test
 	void create_thenBookingStartTimeNull_thenReturnBookingTimeException() {
 		User user = new User(1L, "Ваня", "Van@mail.ru");
