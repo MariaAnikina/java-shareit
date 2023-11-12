@@ -10,10 +10,7 @@ import org.springframework.data.domain.Pageable;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.model.Status;
 import ru.practicum.shareit.booking.repisitory.BookingRepository;
-import ru.practicum.shareit.exception.BookingTimeException;
-import ru.practicum.shareit.exception.ItemNotFoundException;
-import ru.practicum.shareit.exception.ItemNotValidException;
-import ru.practicum.shareit.exception.NegativeValueException;
+import ru.practicum.shareit.exception.*;
 import ru.practicum.shareit.item.CommentMapper;
 import ru.practicum.shareit.item.ItemMapper;
 import ru.practicum.shareit.item.dto.CommentDto;
@@ -110,6 +107,18 @@ class ItemServiceImplTest {
 		ItemDto itemDto = ItemMapper.toItemDto(item, null);
 
 		assertThrows(ItemNotValidException.class, () ->  itemService.create(user1.getId(), itemDto));
+	}
+
+	@Test
+	void update_whenItemNotValidName_thenReturnUserDoesNotExistException() {
+		User user1 = new User(1L, "Ваня", "Van@mail.ru");
+		Item item = new Item(1L, null, "Платье для фотоссесии",
+				false, new User(2L, "Ваня", "Van@mail.ru"), null);
+		ItemDto itemDto = ItemMapper.toItemDto(item, null);
+		when(itemRepository.findById(1L))
+				.thenReturn(Optional.of(item));
+
+		assertThrows(ItemOwnerException.class, () ->  itemService.update(user1.getId(), item.getId(), itemDto));
 	}
 
 	@Test
@@ -248,6 +257,18 @@ class ItemServiceImplTest {
 
 		verify(commentRepository, never()).save(any(Comment.class));
 		assertThrows(BookingTimeException.class, () -> itemService.createComment(user.getId(), item.getId(),
+				CommentMapper.commentToDto(comment, user.getName())));
+	}
+
+	@Test
+	void createComment_whenCommentEmpty_thenCommentaryEmptyException() {
+		User user = new User(1L, "Ваня", "Van@mail.ru");
+		Item item = new Item(1L, "Платье", "Платье для фотоссесии",
+				false, user, null);
+		CommentDto commentDto = new CommentDto(1L, "  ", null, null);
+		Comment comment = CommentMapper.toComment(commentDto, item, user);
+
+		assertThrows(CommentaryEmptyException.class, () -> itemService.createComment(user.getId(), item.getId(),
 				CommentMapper.commentToDto(comment, user.getName())));
 	}
 }

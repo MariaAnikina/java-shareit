@@ -5,6 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import ru.practicum.shareit.exception.UserAlreadyExistsException;
 import ru.practicum.shareit.exception.UserNotFoundException;
 import ru.practicum.shareit.exception.ValidationException;
 import ru.practicum.shareit.user.dto.UserDto;
@@ -81,6 +82,14 @@ class UserServiceTest {
 		User user = new User(1L, null, "Van@mail.ru");
 
 		assertThrows(ValidationException.class, () -> userService.create(UserMapper.toItemDto(user)));
+	}
+
+	@Test
+	void create_whenUserAlreadyExists_thenReturnUserAlreadyExistsException() {
+		User user = new User(1L, "Ваня", "Van@mail.ru");
+		when(userRepository.save(user)).thenThrow(UserAlreadyExistsException.class);
+
+		assertThrows(UserAlreadyExistsException.class, () -> userService.create(UserMapper.toItemDto(user)));
 	}
 
 	@Test
