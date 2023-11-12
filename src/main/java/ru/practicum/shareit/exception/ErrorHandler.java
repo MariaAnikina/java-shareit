@@ -21,7 +21,7 @@ public class ErrorHandler {
         return new ErrorResponse(error);
     }
 
-    @ExceptionHandler({ValidationException.class, ItemUnavailableException.class,
+    @ExceptionHandler({ValidationException.class,
             BookingTimeException.class, BookingStateException.class, BookingStatusException.class,
             IllegalArgumentException.class, CommentaryEmptyException.class, ItemRequestExistsException.class,
             ItemNotValidException.class})
