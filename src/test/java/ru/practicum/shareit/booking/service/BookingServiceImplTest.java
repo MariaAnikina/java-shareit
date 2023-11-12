@@ -44,7 +44,7 @@ class BookingServiceImplTest {
 	private BookingServiceImpl bookingService;
 
 	@Test
-	void create_thenBookingCreate_thenReturnBooking() {
+	void create_whenBookingCreate_thenReturnBooking() {
 		User user = new User(1L, "Ваня", "Van@mail.ru");
 		User owner = new User(2L, "Ваня2", "Van2@mail.ru");
 		Item item = new Item(1L, "Платье", "Платье для фотоссесии",
@@ -71,6 +71,21 @@ class BookingServiceImplTest {
 	}
 
 	@Test
+	void create_whenItemUnavailable_thenReturnItemUnavailableException() {
+		User user = new User(1L, "Ваня", "Van@mail.ru");
+		User owner = new User(2L, "Ваня2", "Van2@mail.ru");
+		Item item = new Item(1L, "Платье", "Платье для фотоссесии",
+				false, owner, null);
+		BookingDto bookingDto = new BookingDto(1L, LocalDateTime.of(2023, 12, 1, 12, 12),
+				LocalDateTime.of(2023, 12, 6, 12, 12), item.getId(), null, null);
+		when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
+		when(itemRepository.findById(bookingDto.getItemId())).thenReturn(Optional.of(item));
+
+		assertThrows(ItemUnavailableException.class, () -> bookingService.create(user.getId(), bookingDto));
+
+		verify(bookingRepository, never()).save(any(Booking.class));
+	}
+	@Test
 	void create_thenBookingStartTimeNull_thenReturnBookingTimeException() {
 		User user = new User(1L, "Ваня", "Van@mail.ru");
 		User owner = new User(2L, "Ваня2", "Van2@mail.ru");
@@ -95,7 +110,7 @@ class BookingServiceImplTest {
 	}
 
 	@Test
-	void create_thenUserNotFound_thenReturnUserNotFoundException() {
+	void create_whenUserNotFound_thenReturnUserNotFoundException() {
 		User user = new User(1L, "Ваня", "Van@mail.ru");
 		User owner = new User(2L, "Ваня2", "Van2@mail.ru");
 		Item item = new Item(1L, "Платье", "Платье для фотоссесии", true, owner, null);
@@ -108,7 +123,7 @@ class BookingServiceImplTest {
 	}
 
 	@Test
-	void create_thenItemNotFound_thenReturnItemNotFoundException() {
+	void create_whenItemNotFound_thenReturnItemNotFoundException() {
 		User user = new User(1L, "Ваня", "Van@mail.ru");
 		User owner = new User(2L, "Ваня2", "Van2@mail.ru");
 		Item item = new Item(1L, "Платье", "Платье для фотоссесии", true, owner, null);
@@ -122,7 +137,7 @@ class BookingServiceImplTest {
 	}
 
 	@Test
-	void create_thenOwnerItemReservation_thenReturnBookingNotFoundException() {
+	void create_whenOwnerItemReservation_thenReturnBookingNotFoundException() {
 		User user = new User(1L, "Ваня", "Van@mail.ru");
 		Item item = new Item(1L, "Платье", "Платье для фотоссесии", true, user, null);
 		BookingDto bookingDto = new BookingDto(1L, LocalDateTime.of(2023, 12, 1, 12, 12),
@@ -135,7 +150,7 @@ class BookingServiceImplTest {
 	}
 
 	@Test
-	void create_thenBookingTimeNotValid_thenReturnBookingTimeException() {
+	void create_whenBookingTimeNotValid_thenReturnBookingTimeException() {
 		User user = new User(1L, "Ваня", "Van@mail.ru");
 		User owner = new User(2L, "Ваня2", "Van2@mail.ru");
 		Item item = new Item(1L, "Платье", "Платье для фотоссесии", true, owner, null);
@@ -149,7 +164,7 @@ class BookingServiceImplTest {
 	}
 
 	@Test
-	void create_thenStartTimeInPast_thenReturnBookingTimeException() {
+	void create_whenStartTimeInPast_thenReturnBookingTimeException() {
 		User user = new User(1L, "Ваня", "Van@mail.ru");
 		User owner = new User(2L, "Ваня2", "Van2@mail.ru");
 		Item item = new Item(1L, "Платье", "Платье для фотоссесии", true, owner, null);
@@ -163,7 +178,7 @@ class BookingServiceImplTest {
 	}
 
 	@Test
-	void create_thenEndTimeInPast_thenReturnBookingTimeException() {
+	void create_whenEndTimeInPast_thenReturnBookingTimeException() {
 		User user = new User(1L, "Ваня", "Van@mail.ru");
 		User owner = new User(2L, "Ваня2", "Van2@mail.ru");
 		Item item = new Item(1L, "Платье", "Платье для фотоссесии", true, owner, null);
