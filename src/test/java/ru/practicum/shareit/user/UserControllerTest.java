@@ -79,7 +79,7 @@ class UserControllerTest {
 
 	@SneakyThrows
 	@Test
-	public void shouldNotAddUserWhenBlankName() {
+	public void shouldNotCreateUserWhenBlankName() {
 		mvc.perform(post("/users")
 						.content(mapper.writeValueAsString(new UserDto(1L, "", "test@mail.com")))
 						.characterEncoding(StandardCharsets.UTF_8)
@@ -91,7 +91,7 @@ class UserControllerTest {
 
 	@SneakyThrows
 	@Test
-	public void shouldNotAddUserWhenBlankEmail() {
+	public void shouldNotCreateUserWhenBlankEmail() {
 		mvc.perform(post("/users")
 						.content(mapper.writeValueAsString(new UserDto(1L, "test", "")))
 						.characterEncoding(StandardCharsets.UTF_8)
