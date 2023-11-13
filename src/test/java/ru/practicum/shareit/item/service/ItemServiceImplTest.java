@@ -110,6 +110,26 @@ class ItemServiceImplTest {
 	}
 
 	@Test
+	void update_whenItemFound_thenReturnItem() {
+		User user1 = new User(1L, "Ваня", "Van@mail.ru");
+		Item item = new Item(1L, null, "Платье для фотоссесии",
+				false, new User(1L, "Ваня", "Van@mail.ru"), null);
+		ItemDto itemDto = ItemMapper.toItemDto(item, null);
+		when(itemRepository.findById(1L))
+				.thenReturn(Optional.of(item));
+		ItemDto itemDtoUpdate = new ItemDto(1L, "Платье", "Платье для фотоссесии", null, 1L,
+				null, null, null);
+		when(itemRepository.save(any(Item.class)))
+				.thenReturn(ItemMapper.toItem(itemDtoUpdate));
+
+
+		ItemDto result = itemService.update(1L, 1L, itemDtoUpdate);
+
+		assertEquals(itemDtoUpdate.getName(), result.getName());
+		assertEquals(itemDto.getDescription(), result.getDescription());
+	}
+
+	@Test
 	void update_whenItemNotValidName_thenReturnUserDoesNotExistException() {
 		User user1 = new User(1L, "Ваня", "Van@mail.ru");
 		Item item = new Item(1L, null, "Платье для фотоссесии",

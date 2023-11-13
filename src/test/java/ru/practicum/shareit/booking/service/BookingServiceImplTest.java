@@ -271,7 +271,7 @@ class BookingServiceImplTest {
 	}
 
 	@Test
-	void getBookingInformation_whenBookingInformationFoundOvner_thenReturnBooking() {
+	void getBookingInformation_whenBookingInformationFoundOwner_thenReturnBooking() {
 		User user = new User(1L, "Ваня", "Van@mail.ru");
 		User owner = new User(2L, "Ваня2", "Van2@mail.ru");
 		Item item = new Item(1L, "Платье", "Платье для фотоссесии", true, owner, null);
@@ -310,7 +310,7 @@ class BookingServiceImplTest {
 	}
 
 	@Test
-	void getBooking_whenBookingFound_thenReturnBooking() {
+	void getBooking_whenBookingFoundStateFUTURE_thenReturnBooking() {
 		User user = new User(1L, "Ваня", "Van@mail.ru");
 		User owner = new User(2L, "Ваня2", "Van2@mail.ru");
 		Item item = new Item(1L, "Платье", "Платье для фотоссесии", true, owner, null);
@@ -322,6 +322,96 @@ class BookingServiceImplTest {
 				any(Pageable.class))).thenReturn(List.of(booking));
 
 		Collection<BookingDtoFull> result = bookingService.getBooking(user.getId(), "FUTURE", 0, 2);
+
+		assertEquals(result.size(), 1);
+		assertTrue(result.contains(BookingMapper.toBookingDtoFull(booking)));
+	}
+
+	@Test
+	void getBooking_whenBookingFoundStateCURRENT_thenReturnBooking() {
+		User user = new User(1L, "Ваня", "Van@mail.ru");
+		User owner = new User(2L, "Ваня2", "Van2@mail.ru");
+		Item item = new Item(1L, "Платье", "Платье для фотоссесии", true, owner, null);
+		BookingDto bookingDto = new BookingDto(1L, LocalDateTime.of(2023, 12, 1, 12, 12),
+				LocalDateTime.of(2022, 12, 6, 12, 12), item.getId(), user.getId(), Status.APPROVED);
+		Booking booking = BookingMapper.toBooking(bookingDto, user, item);
+		when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
+		when(bookingRepository.findByBookerIdAndStartBeforeAndEndAfterOrderByStartDesc(anyLong(), any(LocalDateTime.class),
+				any(LocalDateTime.class), any(Pageable.class))).thenReturn(List.of(booking));
+
+		Collection<BookingDtoFull> result = bookingService.getBooking(user.getId(), "CURRENT", 0, 2);
+
+		assertEquals(result.size(), 1);
+		assertTrue(result.contains(BookingMapper.toBookingDtoFull(booking)));
+	}
+
+	@Test
+	void getBooking_whenBookingFoundStateWAITING_thenReturnBooking() {
+		User user = new User(1L, "Ваня", "Van@mail.ru");
+		User owner = new User(2L, "Ваня2", "Van2@mail.ru");
+		Item item = new Item(1L, "Платье", "Платье для фотоссесии", true, owner, null);
+		BookingDto bookingDto = new BookingDto(1L, LocalDateTime.of(2023, 12, 1, 12, 12),
+				LocalDateTime.of(2022, 12, 6, 12, 12), item.getId(), user.getId(), Status.APPROVED);
+		Booking booking = BookingMapper.toBooking(bookingDto, user, item);
+		when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
+		when(bookingRepository.findByBookerIdAndStatusOrderByStartDesc(anyLong(), any(Status.class), any(Pageable.class)))
+				.thenReturn(List.of(booking));
+
+		Collection<BookingDtoFull> result = bookingService.getBooking(user.getId(), "WAITING", 0, 2);
+
+		assertEquals(result.size(), 1);
+		assertTrue(result.contains(BookingMapper.toBookingDtoFull(booking)));
+	}
+
+	@Test
+	void getBooking_whenBookingFoundStatePAST_thenReturnBooking() {
+		User user = new User(1L, "Ваня", "Van@mail.ru");
+		User owner = new User(2L, "Ваня2", "Van2@mail.ru");
+		Item item = new Item(1L, "Платье", "Платье для фотоссесии", true, owner, null);
+		BookingDto bookingDto = new BookingDto(1L, LocalDateTime.of(2023, 12, 1, 12, 12),
+				LocalDateTime.of(2022, 12, 6, 12, 12), item.getId(), user.getId(), Status.APPROVED);
+		Booking booking = BookingMapper.toBooking(bookingDto, user, item);
+		when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
+		when(bookingRepository.findByBookerIdAndEndBeforeOrderByStartDesc(anyLong(), any(LocalDateTime.class),
+				any(Pageable.class))).thenReturn(List.of(booking));
+
+		Collection<BookingDtoFull> result = bookingService.getBooking(user.getId(), "PAST", 0, 2);
+
+		assertEquals(result.size(), 1);
+		assertTrue(result.contains(BookingMapper.toBookingDtoFull(booking)));
+	}
+
+	@Test
+	void getBooking_whenBookingFoundStateREJECTED_thenReturnBooking() {
+		User user = new User(1L, "Ваня", "Van@mail.ru");
+		User owner = new User(2L, "Ваня2", "Van2@mail.ru");
+		Item item = new Item(1L, "Платье", "Платье для фотоссесии", true, owner, null);
+		BookingDto bookingDto = new BookingDto(1L, LocalDateTime.of(2023, 12, 1, 12, 12),
+				LocalDateTime.of(2022, 12, 6, 12, 12), item.getId(), user.getId(), Status.APPROVED);
+		Booking booking = BookingMapper.toBooking(bookingDto, user, item);
+		when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
+		when(bookingRepository.findByBookerIdAndStatusOrderByStartDesc(anyLong(), any(Status.class), any(Pageable.class)))
+				.thenReturn(List.of(booking));
+
+		Collection<BookingDtoFull> result = bookingService.getBooking(user.getId(), "REJECTED", 0, 2);
+
+		assertEquals(result.size(), 1);
+		assertTrue(result.contains(BookingMapper.toBookingDtoFull(booking)));
+	}
+
+	@Test
+	void getBooking_whenBookingFoundStateALL_thenReturnBooking() {
+		User user = new User(1L, "Ваня", "Van@mail.ru");
+		User owner = new User(2L, "Ваня2", "Van2@mail.ru");
+		Item item = new Item(1L, "Платье", "Платье для фотоссесии", true, owner, null);
+		BookingDto bookingDto = new BookingDto(1L, LocalDateTime.of(2023, 12, 1, 12, 12),
+				LocalDateTime.of(2022, 12, 6, 12, 12), item.getId(), user.getId(), Status.APPROVED);
+		Booking booking = BookingMapper.toBooking(bookingDto, user, item);
+		when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
+		when(bookingRepository.findByBookerIdOrderByStartDesc(anyLong(), any(Pageable.class)))
+				.thenReturn(List.of(booking));
+
+		Collection<BookingDtoFull> result = bookingService.getBooking(user.getId(), "ALL", 0, 2);
 
 		assertEquals(result.size(), 1);
 		assertTrue(result.contains(BookingMapper.toBookingDtoFull(booking)));
