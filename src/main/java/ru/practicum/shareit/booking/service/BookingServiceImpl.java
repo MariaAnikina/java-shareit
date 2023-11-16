@@ -144,7 +144,7 @@ public class BookingServiceImpl implements BookingService {
 
 	@Override
 	public Collection<BookingDtoFull> getYourBooking(Long userId, String state, Integer from, Integer size) {
-		checkingParametersSizeAndFrom(size, from);
+		checkingParametersSizeAndFrom(from, size);
 		int page = from / size;
 		Pageable pageRequest = PageRequest.of(page, size);
 		BookingState bookingState;
