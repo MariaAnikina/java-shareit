@@ -98,9 +98,7 @@ public class ItemServiceImpl implements ItemService {
 	}
 
 	public Collection<ItemDto> getItemsUser(Long userId, Integer from, Integer size) {
-		if (from < 0 || size <= 0) {
-			throw new NegativeValueException("Значения " + size + " или " + from + " имеют некорректные значения");
-		}
+		checkingParametersSizeAndFrom(from, size);
 		int page = from / size;
 		if (!userRepository.existsById(userId))
 			throw new UserNotFoundException("Пользователь с id=" + userId + " не найден");
@@ -135,9 +133,7 @@ public class ItemServiceImpl implements ItemService {
 	}
 
 	public Collection<ItemDto> getItemsByNameOrDescription(Long userId, String text, Integer from, Integer size) {
-		if (from < 0 || size <= 0) {
-			throw new NegativeValueException("Значения " + size + " или " + from + " имеют некорректные значения");
-		}
+		checkingParametersSizeAndFrom(from, size);
 		if (text.isBlank()) {
 			return new ArrayList<>();
 		}
@@ -170,5 +166,12 @@ public class ItemServiceImpl implements ItemService {
 		comment.setCreated(LocalDateTime.now());
 		commentRepository.save(comment);
 		return CommentMapper.commentToDto(comment, author.getName());
+	}
+
+	public void checkingParametersSizeAndFrom(Integer from, Integer size) {
+		if (from < 0 || size <= 0) {
+			throw new NegativeValueException("Значения size = " + size + " или size = "
+					+ from + " имеют некорректные значения");
+		}
 	}
 }

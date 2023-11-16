@@ -101,9 +101,7 @@ public class BookingServiceImpl implements BookingService {
 
 	@Override
 	public Collection<BookingDtoFull> getBooking(Long userId, String state, Integer from, Integer size) {
-		if (from < 0 || size <= 0) {
-			throw new NegativeValueException("Значения " + size + " и " + from + " имеют некорректные значения");
-		}
+		checkingParametersSizeAndFrom(from, size);
 		int page = from / size;
 		Pageable pageRequest = PageRequest.of(page, size);
 		Optional<User> userOptional = userRepository.findById(userId);
@@ -146,9 +144,7 @@ public class BookingServiceImpl implements BookingService {
 
 	@Override
 	public Collection<BookingDtoFull> getYourBooking(Long userId, String state, Integer from, Integer size) {
-		if (from < 0 || size <= 0) {
-			throw new NegativeValueException("Значения " + size + " и " + from + " имеют некорректные значения");
-		}
+		checkingParametersSizeAndFrom(size, from);
 		int page = from / size;
 		Pageable pageRequest = PageRequest.of(page, size);
 		BookingState bookingState;
@@ -187,5 +183,12 @@ public class BookingServiceImpl implements BookingService {
 			throw new RuntimeException("Бронирований нет");
 		}
 		return bookings.stream().map(BookingMapper::toBookingDtoFull).collect(Collectors.toList());
+	}
+
+	public void checkingParametersSizeAndFrom(Integer from, Integer size) {
+		if (from < 0 || size <= 0) {
+			throw new NegativeValueException("Значения size = " + size + " или size = "
+					+ from + " имеют некорректные значения");
+		}
 	}
 }

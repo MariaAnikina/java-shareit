@@ -15,7 +15,7 @@ public class ItemMapper {
 				item.getName(),
 				item.getDescription(),
 				item.getAvailable(),
-				item.getRequestId() == null ? null : item.getRequestId(),
+				item.getRequestId(),
 				lastBooking,
 				nextBooking,
 				comments
