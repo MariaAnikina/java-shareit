@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.user.dto.UserDto;
 
+import javax.validation.Valid;
 import java.util.Collection;
 
 @RestController
@@ -23,7 +24,7 @@ public class UserController {
 	}
 
 	@PostMapping
-	public UserDto create(@RequestBody UserDto userDto) {
+	public UserDto create(@RequestBody @Valid UserDto userDto) {
 		return service.create(userDto);
 	}
 

@@ -2,17 +2,17 @@ package ru.practicum.shareit.request.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import ru.practicum.shareit.item.dto.ItemDto;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+
 import java.time.LocalDateTime;
+import java.util.List;
 
 @AllArgsConstructor
 @Data
-public class ItemRequestDto {
+public class ItemRequestOutDto {
 	private Long id;
-	@NotNull
-	@NotBlank(message = "Описание запроса не может быть пустым")
 	private String description;
 	private LocalDateTime created;
+	private List<ItemDto> items;
 }

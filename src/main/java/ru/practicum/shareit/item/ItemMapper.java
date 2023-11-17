@@ -37,12 +37,12 @@ public class ItemMapper {
 
 	public static Item toItem(ItemDto itemDto) {
 		return new Item(
-				null,
+				itemDto.getId(),
 				itemDto.getName(),
 				itemDto.getDescription(),
 				itemDto.getAvailable(),
-				new User(),
-				itemDto.getRequest()
+				null,
+				itemDto.getRequestId()
 		);
 	}
 
@@ -53,7 +53,7 @@ public class ItemMapper {
 				itemDto.getDescription(),
 				itemDto.getAvailable() != null ? itemDto.getAvailable() : null,
 				user,
-				itemDto.getRequest()
+				itemDto.getRequestId()
 		);
 	}
 }

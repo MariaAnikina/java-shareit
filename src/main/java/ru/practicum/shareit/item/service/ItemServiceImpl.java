@@ -1,6 +1,8 @@
 package ru.practicum.shareit.item.service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.booking.BookingMapper;
 import ru.practicum.shareit.booking.dto.BookingDto;
@@ -34,11 +36,11 @@ public class ItemServiceImpl implements ItemService {
 	public ItemDto create(Long userId, ItemDto itemDto) {
 		Item item = ItemMapper.toItem(itemDto);
 		Optional<User> userOptional = userRepository.findById(userId);
+		if (itemDto.getAvailable() == null || itemDto.getName() == null || itemDto.getDescription() == null ||
+				itemDto.getName().isBlank() || itemDto.getDescription().isBlank()) {
+			throw new ItemNotValidException("Имя, опоисание и статус доступа должны быть заполнены");
+		}
 		if (userOptional.isEmpty()) {
-			if (itemDto.getAvailable() == null || itemDto.getName() == null || itemDto.getDescription() == null ||
-					itemDto.getName().isBlank() || itemDto.getDescription().isBlank()) {
-				throw new UserDoesNotExistException("Имя, опоисание и статус доступа должны быть заполнены");
-			}
 			throw new UserNotFoundException("Пользователя с id: " + userId + " не существует");
 		}
 		User user = userOptional.get();
@@ -95,10 +97,13 @@ public class ItemServiceImpl implements ItemService {
 		return ItemMapper.toItemDto(item, lastBookingDto, nextBookingDto, comments);
 	}
 
-	public Collection<ItemDto> getItemsUser(Long userId) {
-
-
-		return itemRepository.findByOwnerId(userId).stream()
+	public Collection<ItemDto> getItemsUser(Long userId, Integer from, Integer size) {
+		checkingParametersSizeAndFrom(from, size);
+		int page = from / size;
+		if (!userRepository.existsById(userId))
+			throw new UserNotFoundException("Пользователь с id=" + userId + " не найден");
+		Pageable pageRequest = PageRequest.of(page, size);
+		return itemRepository.findByOwnerId(userId, pageRequest).stream()
 				.map(item -> {
 					Booking last = null;
 					Booking next = null;
@@ -127,7 +132,8 @@ public class ItemServiceImpl implements ItemService {
 				);
 	}
 
-	public Collection<ItemDto> getItemsByNameOrDescription(Long userId, String text) {
+	public Collection<ItemDto> getItemsByNameOrDescription(Long userId, String text, Integer from, Integer size) {
+		checkingParametersSizeAndFrom(from, size);
 		if (text.isBlank()) {
 			return new ArrayList<>();
 		}
@@ -160,5 +166,12 @@ public class ItemServiceImpl implements ItemService {
 		comment.setCreated(LocalDateTime.now());
 		commentRepository.save(comment);
 		return CommentMapper.commentToDto(comment, author.getName());
+	}
+
+	public void checkingParametersSizeAndFrom(Integer from, Integer size) {
+		if (from < 0 || size <= 0) {
+			throw new NegativeValueException("Значения size = " + size + " или size = "
+					+ from + " имеют некорректные значения");
+		}
 	}
 }
