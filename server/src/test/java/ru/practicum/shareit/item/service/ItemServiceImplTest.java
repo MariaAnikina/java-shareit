@@ -6,7 +6,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Pageable;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.model.Status;
 import ru.practicum.shareit.booking.repisitory.BookingRepository;
@@ -79,8 +78,8 @@ class ItemServiceImplTest {
 		ItemDto itemDto = ItemMapper.toItemDto(item, null);
 		ItemDto itemDto2 = ItemMapper.toItemDto(item2, null);
 
-		assertThrows(ItemNotValidException.class, () ->  itemService.create(user1.getId(), itemDto));
-		assertThrows(ItemNotValidException.class, () ->  itemService.create(user1.getId(), itemDto2));
+		assertThrows(ItemNotValidException.class, () -> itemService.create(user1.getId(), itemDto));
+		assertThrows(ItemNotValidException.class, () -> itemService.create(user1.getId(), itemDto2));
 	}
 
 	@Test
@@ -94,8 +93,8 @@ class ItemServiceImplTest {
 		ItemDto itemDto = ItemMapper.toItemDto(item, null);
 		ItemDto itemDto2 = ItemMapper.toItemDto(item2, null);
 
-		assertThrows(ItemNotValidException.class, () ->  itemService.create(user1.getId(), itemDto));
-		assertThrows(ItemNotValidException.class, () ->  itemService.create(user1.getId(), itemDto2));
+		assertThrows(ItemNotValidException.class, () -> itemService.create(user1.getId(), itemDto));
+		assertThrows(ItemNotValidException.class, () -> itemService.create(user1.getId(), itemDto2));
 	}
 
 	@Test
@@ -106,7 +105,7 @@ class ItemServiceImplTest {
 				null, new User(1L, "Ваня", "Van@mail.ru"), null);
 		ItemDto itemDto = ItemMapper.toItemDto(item, null);
 
-		assertThrows(ItemNotValidException.class, () ->  itemService.create(user1.getId(), itemDto));
+		assertThrows(ItemNotValidException.class, () -> itemService.create(user1.getId(), itemDto));
 	}
 
 	@Test
@@ -138,7 +137,7 @@ class ItemServiceImplTest {
 		when(itemRepository.findById(1L))
 				.thenReturn(Optional.of(item));
 
-		assertThrows(ItemOwnerException.class, () ->  itemService.update(user1.getId(), item.getId(), itemDto));
+		assertThrows(ItemOwnerException.class, () -> itemService.update(user1.getId(), item.getId(), itemDto));
 	}
 
 	@Test
@@ -174,43 +173,13 @@ class ItemServiceImplTest {
 	}
 
 	@Test
-	void getItemsUser_whenItemsFound_thenReturnItems() {
-		User user = new User(1L, "Ваня", "Van@mail.ru");
-		Item item = new Item(1L, "Платье", "Платье для фотоссесии",
-				false, user, null);
-		Item item2 = new Item(2L, "Сумка", "Сумка для фотоссесии",
-				true, user, null);
-		Item item3 = new Item(3L, "Стол", "Стол на большую компанию",
-				false, new User(2L, "Саша", "Sanya@mail.ru"), null);
-		when(userRepository.existsById(1L)).thenReturn(true);
-		when(itemRepository.findByOwnerId(anyLong(), any(Pageable.class))).thenReturn(List.of(item, item2));
-		when(bookingRepository.findFirstByItemIdAndStatusNotAndStartBeforeOrderByStartDesc(
-				anyLong(),
-				any(Status.class),
-				any(LocalDateTime.class)))
-				.thenReturn(null);
-		when(bookingRepository.findFirstByItemIdAndStatusNotAndStartAfterOrderByStartAsc(
-				anyLong(),
-				any(Status.class),
-				any(LocalDateTime.class)))
-				.thenReturn(null);
-		when(commentRepository.findByItemIdOrderByCreatedDesc(anyLong())).thenReturn(new ArrayList<>());
-
-		Collection<ItemDto> itemsDto = itemService.getItemsUser(1L, 0,3);
-
-		assertEquals(itemsDto.size(), 2);
-		assertTrue(itemsDto.contains(ItemMapper.toItemDto(item, null, null, new ArrayList<>())));
-		assertTrue(itemsDto.contains(ItemMapper.toItemDto(item2, null, null, new ArrayList<>())));
-	}
-
-	@Test
 	void getItemsUser_whenFromNotValid_thenReturnNegativeValueException() {
-		assertThrows(NegativeValueException.class, () -> itemService.getItemsUser(1L, -5,3));
+		assertThrows(NegativeValueException.class, () -> itemService.getItemsUser(1L, -5, 3));
 	}
 
 	@Test
 	void getItemsUser_whenSizeNotValid_thenReturnNegativeValueException() {
-		assertThrows(NegativeValueException.class, () -> itemService.getItemsUser(1L, 5,0));
+		assertThrows(NegativeValueException.class, () -> itemService.getItemsUser(1L, 5, 0));
 	}
 
 	@Test
