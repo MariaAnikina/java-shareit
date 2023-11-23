@@ -12,7 +12,6 @@ import ru.practicum.shareit.booking.model.BookingState;
 import ru.practicum.shareit.booking.model.dto.BookingDtoDefault;
 import ru.practicum.shareit.client.BaseClient;
 import ru.practicum.shareit.exception.BookingStateException;
-
 import java.util.Map;
 
 @Service
