@@ -16,4 +16,6 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 	Collection<Item> getItemsByNameOrDescription(String text);
 
 	Collection<Item> findByRequestId(Long id);
+
+	Collection<Item> findByOwnerIdOrderById(Long userId, Pageable pageRequest);
 }

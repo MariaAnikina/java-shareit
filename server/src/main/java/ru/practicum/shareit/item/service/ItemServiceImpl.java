@@ -103,7 +103,7 @@ public class ItemServiceImpl implements ItemService {
 		if (!userRepository.existsById(userId))
 			throw new UserNotFoundException("Пользователь с id=" + userId + " не найден");
 		Pageable pageRequest = PageRequest.of(page, size);
-		return itemRepository.findByOwnerId(userId, pageRequest).stream()
+		return itemRepository.findByOwnerIdOrderById(userId, pageRequest).stream()
 				.map(item -> {
 					Booking last = null;
 					Booking next = null;
